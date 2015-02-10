@@ -51,9 +51,11 @@ test "login with valid information followed by logout" do
    assert_select "a[href=?]", user_path(@user), count: 0
  end
  
+ #assigns allows test to grab the controllers instant variable.
 test "login with remembering" do
   log_in_as(@user, remember_me: '1')
-  assert_not_nil cookies['remember_token']
+  assert_equal assigns(:user).remember_token, cookies['remember_token']
+  #assert_not_nil cookies['remember_token']
 end
 
 test "login without remembering" do
