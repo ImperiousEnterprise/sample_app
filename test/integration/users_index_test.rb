@@ -39,4 +39,18 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
      get users_path
      assert_select 'a', text: 'delete', count: 0
    end
+   
+   #test for activated users
+   test "show activated users" do
+     log_in_as (@admin)
+     get users_path
+     assert_template 'users/index'
+     userz = assigns(:users)
+     userz.each do |user|
+       assert user.activated?
+     end
+     get users_path(@admin)
+     assert_template 'users/_user'
+   end
+
 end
