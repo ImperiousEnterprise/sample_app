@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  #has_my declares a user to have many microposts
+  #dependent arranges for microposts to be destoryed when user is destoryed
+  has_many :microposts, dependent: :destroy
   #attr_accessor creates getters and setters for remember_token
   attr_accessor :remember_token , :activation_token, :reset_token
   before_save :downcase_email
@@ -91,6 +94,12 @@ class User < ActiveRecord::Base
    def self.new_token
      SecureRandom.urlsafe_base64
    end
+  
+  # Defines a proto-feed.
+    # See "Following users" for the full implementation.
+    def feed
+      Micropost.where("user_id = ?", id)
+    end
    
   private
 
