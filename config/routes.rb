@@ -21,10 +21,19 @@ Rails.application.routes.draw do
   
   delete 'logout'  => 'sessions#destroy' # delete a session
 
-  resources :users
+  resources :users do
+    #member method gets the url of all followers and following for when user is selected
+    member do
+      #generated urls:
+      #/users/1/following
+      #/users/1/followers
+      get :following, :followers
+    end
+  end
   resources :account_activations, only: [:edit]
   resources :password_resets, only: [:new, :create, :edit, :update]
   resources :microposts, only: [:create, :destroy]
+  resources :relationships,       only: [:create, :destroy]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
